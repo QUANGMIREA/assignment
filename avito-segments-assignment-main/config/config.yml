@@ -1,0 +1,20 @@
+usersegmentator:
+  name: 'avito-user-segmentator'
+  version: '1.0.0'
+
+http:
+  host: '0.0.0.0'
+  port: '8000'
+
+mysql:
+  host: 'mysql'
+  max_cons: 50
+  port: '3306'
+  conn_timeout: 10
+
+report:
+  file_prefix: 'report_'
+  file_ext: '.csv'
+
+segment:
+  ttl_check_interval: 1

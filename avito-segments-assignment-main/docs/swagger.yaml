@@ -1,0 +1,206 @@
+definitions:
+  history.ReportResponse:
+    properties:
+      csv_url:
+        type: string
+    type: object
+  history.Request:
+    properties:
+      end_date:
+        type: string
+      start_date:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  segment.RequestSegmentSlug:
+    properties:
+      fraction:
+        type: integer
+      segment_slug:
+        type: string
+    type: object
+  segment.RequestUpdateSegments:
+    properties:
+      assign_segments:
+        items:
+          type: string
+        type: array
+      ttl:
+        type: integer
+      unassign_segments:
+        items:
+          type: string
+        type: array
+      user_id:
+        type: integer
+    type: object
+  segment.RequestUserID:
+    properties:
+      user_id:
+        type: integer
+    type: object
+  segment.UserSegments:
+    properties:
+      segments:
+        items:
+          type: string
+        type: array
+      user_id:
+        type: integer
+    type: object
+info:
+  contact:
+    email: androsov.p.v@gmail.com
+    name: Peter Androsov
+    url: http://t.me/nervous_void
+  description: Avito Tech backend trainee assignment 2023
+  title: Dynamic User Segmentation Service API
+  version: "1.0"
+paths:
+  /api/create_segment:
+    post:
+      consumes:
+      - application/json
+      description: creates new segment
+      parameters:
+      - description: fraction — optional
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/segment.RequestSegmentSlug'
+      responses:
+        "201":
+          description: created
+          schema:
+            type: string
+        "400":
+          description: bad input
+          schema:
+            type: string
+        "500":
+          description: something went wrong
+          schema:
+            type: string
+      summary: creates new segment
+      tags:
+      - Segments
+  /api/delete_segment:
+    delete:
+      consumes:
+      - application/json
+      description: deletes existing segment
+      parameters:
+      - description: The input struct
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/segment.RequestSegmentSlug'
+      responses:
+        "200":
+          description: deleted
+          schema:
+            type: string
+        "400":
+          description: bad input
+          schema:
+            type: string
+        "500":
+          description: something went wrong
+          schema:
+            type: string
+      summary: deletes existing segment
+      tags:
+      - Segments
+  /api/get_user_history:
+    get:
+      consumes:
+      - application/json
+      description: receive report on user segments assignments and unassignments within
+        the given dates
+      parameters:
+      - description: The input struct
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/history.Request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/history.ReportResponse'
+        "400":
+          description: bad input
+          schema:
+            type: string
+        "500":
+          description: something went wrong
+          schema:
+            type: string
+      summary: receive report on user segments assignments and unassignments
+      tags:
+      - History
+  /api/get_user_segments:
+    get:
+      consumes:
+      - application/json
+      description: receive segments assigned to user
+      parameters:
+      - description: The input struct
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/segment.RequestUserID'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/segment.UserSegments'
+        "400":
+          description: bad input
+          schema:
+            type: string
+        "500":
+          description: something went wrong
+          schema:
+            type: string
+      summary: receive segments assigned to user
+      tags:
+      - Segments
+  /api/update_user_segments:
+    post:
+      consumes:
+      - application/json
+      description: assign and unassign segments from user
+      parameters:
+      - description: The input struct
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/segment.RequestUpdateSegments'
+      responses:
+        "200":
+          description: assigned and unassigned
+          schema:
+            type: string
+        "400":
+          description: bad input
+          schema:
+            type: string
+        "500":
+          description: something went wrong
+          schema:
+            type: string
+      summary: assign and unassign segments from user
+      tags:
+      - Segments
+swagger: "2.0"
